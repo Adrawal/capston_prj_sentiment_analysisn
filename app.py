@@ -5,7 +5,9 @@ import pandas as pd
 import pickle
 import nltk
 
-nltk.download('punkt', download_dir='C://nltk_data/')
+# To run in local point nltk where is you have installed
+# nltk.download('punkt', download_dir='C://nltk_data/')
+nltk.download('punkt', download_dir='/app/nltk_data/')
 
 app = Flask(__name__)
 
@@ -21,14 +23,14 @@ def predict():
 
         user_input = [str(x) for x in request.form.values()]
         user_input = user_input[0]
-        # print(user_input)
+        print(user_input)
         pickled_tfidf_vectorizer = pickle.load(open('Tfidf_vectorizer.pkl', 'rb'))
         pickled_model = pickle.load(open('Logistic_Reg_final_model.pkl', 'rb'))
         pickled_user_final_rating = pickle.load(open('user_final_rating.pkl', 'rb'))
         pickled_mapping = pickle.load(open('prod_id_name_mapping.pkl', 'rb'))
         pickled_reviews_data = pickle.load(open('reviews_data_all_cols.pkl', 'rb'))
 
-        # print(pickled_user_final_rating)
+        print(pickled_user_final_rating)
 
         # recommendations = pd.DataFrame(pickled_user_final_rating.loc[user_input]).reset_index()
         # recommendations.columns=['id','user_pred_rating']
@@ -74,10 +76,8 @@ def predict():
         name_display = name_display['name']
 
         output = name_display.to_list()
-        output.insert(0, "***")
-        output = "***\t \t***".join(output)
-        # print(output)
-        return render_template('index.html', prediction_text='Top 5 recommendations are- {}'.format(output))
+        print(output)
+        return render_template('index.html', my_list=output)
     else:
         return render_template('index.html')
 
